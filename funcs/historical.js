@@ -131,7 +131,7 @@ const historicalV2 = async (keys, redis) => {
  * @param 	{string}	province  	Province query param (optional)
  * @returns {Object}				The filtered historical data.
  */
-const getHistoricalCountryDataV2 = (data, query, province = null) => {
+const getHistoricalCountryDataV2 = (data, query, province = null, initialDate = null, finalDate = null) => {
 	const countryInfo = countryUtils.getCountryData(query);
 	// invalid query
 	if (countryInfo.country === null) return null;
