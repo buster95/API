@@ -12,11 +12,19 @@
     "coronavirus",
     "covid"
   ],
+  "apidoc": {
+    "name": "Novel COVID-API",
+    "version": "1.0.0",
+    "description": "API for covid19 pandemic information",
+    "title": "NovelCovid API",
+    "url": "https://corona.lmao.ninja"
+  },
   "scripts": {
     "start": "node server.js",
     "lint": "eslint '**/*.js' --ignore-pattern node_modules/",
     "lint:fix": "eslint ./**/*.js --fix --ignore-pattern node_modules/",
-    "lint:win32": "eslint ./**/*.js --ignore-pattern node_modules/"
+    "lint:win32": "eslint ./**/*.js --ignore-pattern node_modules/",
+    "docs": "apidoc -i ./ -o docs/ -e node_modules/ -e template/ -e docs/ -t ./template"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -24,10 +32,12 @@
     "cors": "^2.8.5",
     "csvtojson": "^2.0.10",
     "express": "^4.16.3",
-    "ioredis": "*"
+    "ioredis": "*",
+    "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
     "@aero/eslint-config": "^1.0.1",
+    "apidoc": "^0.20.1",
     "eslint": "^6.8.0"
   }
 }

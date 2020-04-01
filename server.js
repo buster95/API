@@ -10,6 +10,12 @@ const app = express();
 
 app.use(cors());
 
+
+var swaggerUi = require('swagger-ui-express'),
+	swaggerDocument = require('./swagger.json');
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 // create redis instance :O
 const redis = new Redis(config.redis.host, {
 	password: config.redis.password,
@@ -47,6 +53,27 @@ app.get('/support', async (req, res) => {
 });
 
 // API endpoints
+/**
+ * @api {get} /all Global Information About Covid19
+ * 
+ * @apiVersion 1.0.0
+ * @apiName AllGlobal
+ * @apiGroup NovelCovid-API-v1
+ * 
+ * @apiSuccess {number} cases number of coronavirus cases
+ * @apiSuccess {number} deaths number of coronavirus deaths
+ * @apiSuccess {number} recovered number of coronavirus recovered
+ * @apiSuccessExample Success-Response
+ * HTTP/1.1 200 OK
+ *{
+ *	"cases": 853799,
+ *	"deaths": 42000,
+ *	"recovered": 176906,
+ *	"updated": 1585689337044,
+ *	"active": 634893,
+ *	"affectedCountries": 204
+ *}
+ */
 app.get('/all', async (req, res) => {
 	const all = JSON.parse(await redis.get(keys.all));
 	const countries = JSON.parse(await redis.get(keys.countries));
