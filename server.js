@@ -41,6 +41,7 @@ app.set('view engine', 'ejs');
 app.use(require('cookie-parser')());
 
 app.get('/', csrfProtection, async (req, res) => res.render('index', { csrfToken: req.csrfToken() }));
+app.get('/stats', csrfProtection, async (req, res) => res.render('stats', { csrfToken: req.csrfToken() }));
 
 app.get('/invite', async (req, res) =>
 	res.redirect('https://discordapp.com/oauth2/authorize?client_id=685268214435020809&scope=bot&permissions=537250880'));
