@@ -3,6 +3,7 @@ const countryUtils = require('../utils/countryUtils');
 const stringUtils = require('../utils/stringUtils');
 const csvUtils = require('../utils/csvUtils');
 const logger = require('../utils/logger');
+const { forEach } = require('../utils/countries');
 
 // eslint-disable-next-line max-len
 const base = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/';
@@ -171,15 +172,20 @@ const getHistoricalAllDataV2 = (data, lastdays = 30) => {
 	const deaths = {};
 	const recovered = {};
 	const dailyCases = {};
-	data.forEach(country => {
-		let lastkey;
+	let lastCases = 0;
+	data.map(country => {
+		lastCases += country.timeline.cases[Object.keys(country.timeline.cases).slice((lastdays + 1) * -1)[0]];
+		console.log(lastCases);
+		return country;
+	}).forEach(country => {
 		Object.keys(country.timeline.cases).slice(lastdays * -1).forEach(key => {
 			/* eslint no-unused-expressions: ["error", { "allowTernary": true }] */
 			cases[key] ? cases[key] += country.timeline.cases[key] : cases[key] = country.timeline.cases[key];
 			deaths[key] ? deaths[key] += country.timeline.deaths[key] : deaths[key] = country.timeline.deaths[key];
 			recovered[key] ? recovered[key] += country.timeline.recovered[key] : recovered[key] = country.timeline.recovered[key];
 			// eslint-disable-next-line no-sequences, no-unused-expressions
-			lastkey ? dailyCases[key] = cases[key] - cases[lastkey] : dailyCases[key] = 0, lastkey = key;
+			dailyCases[key] = cases[key] - lastCases, lastCases = cases[key];
+			// lastCases ?  : dailyCases[key] = 0, 
 			return true;
 		});
 		return true;
